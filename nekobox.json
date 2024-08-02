@@ -4,7 +4,7 @@
     "rules": [
       {
         "domain_suffix": [
-          "3hwat.mapin.my.id"
+          ""
         ],
         "server": "direct-dns",
         "disable_cache": false
