@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GEO PROJECT</title>
+  <link href="https://raw.githubusercontent.com/jaka1m/jalu/main/favicon-32x32.png" rel="icon" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin />
+  <link rel="preload" href="https://raw.githubusercontent.com/jaka1m/jalu/main/config.json" as="fetch" crossorigin />
+  <link rel="preload" href="https://raw.githubusercontent.com/jaka1m/jalu/main/config-simple.json" as="fetch" crossorigin />
+  <link rel="preload" href="https://raw.githubusercontent.com/jaka1m/jalu/main/config-bfm.json" as="fetch" crossorigin />
+  <link rel="preload" href="https://raw.githubusercontent.com/jaka1m/jalu/main/config-bfm-simple.json" as="fetch" crossorigin />
+  <link rel="preload" href="https://fonts.gstatic.com/l/font?kit=vEFy2_tTDB4M7-auWDN0ahZJW3IX2ih5nk3AucvUHf6OAVIJmeUDygwjisltrhlPAsllw1O1MAJBhw&skey=8bcb392be1d494a6&v=v7" as="font" type="font/woff2" crossorigin>
+  <style>
+    /* Reset margin and padding for all elements */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Basic font and background styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+      padding-bottom: 80px; /* Space for fixed footer */
+    }
+
+    /* Style for the title section */
+    .judul {
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .judul h2 {
+      font-size: 2.8em;
+      color: #444;
+      margin-bottom: 10px;
+    }
+
+    .judul h3 {
+      font-size: 1.6em;
+      color: #777;
+    }
+
+    /* Style for card container */
+    .card {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Style for input and output sections */
+    .input-url-v2ray, .convert-result {
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1em;
+      resize: vertical;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .tombol {
+      text-align: center;
+    }
+
+    .button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 5px;
+      cursor: pointer;
+      font-size: 0.85em;
+      transition: background-color 0.3s, transform 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    .button:focus {
+      outline: none;
+    }
+
+    hr {
+      margin: 20px 0;
+      border: 0;
+      border-top: 2px solid #ddd;
+    }
+
+    /* Style for the footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #333;
+      color: #fff;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    footer .kaki {
+      margin-top: 10px;
+    }
+
+    footer svg {
+      fill: #fff;
+      vertical-align: middle;
+      transition: fill 0.3s;
+    }
+
+    footer svg:hover {
+      fill: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <div class="judul">
+    <h2>GEO PROJECT</h2>
+    <h3>Convert xray/v2ray URL links to Sing-Box JSON.</h3>
+  </div>
+  <div class="card">
+    <div class="container">
+      <div class="input-url-v2ray">
+        <h4><b>Input Link Config</b></h4>
+        <textarea id="input" placeholder="Paste the v2ray/xray config link here, multi links separated by Enter"></textarea>
+        <br />
+        <div class="tombol">
+          <button class="button" onclick="parseUrl()">Convert</button>
+        </div>
+      </div>
+      <hr>
+      <div class="convert-result">
+        <h4><b>Base SFA Config</b></h4>
+        <textarea id="output1"></textarea>
+        <br />
+        <div class="tombol">
+          <button class="button" onclick="downloadConfig('output1')">Download</button>
+          <button class="button" onclick="pasteConfig('output1')">Copy to Clipboard</button>
+        </div>
+      </div>
+      <hr>
+      <div class="convert-result">
+        <h4><b>Simple SFA Config</b></h4>
+        <textarea id="output2"></textarea>
+        <br />
+        <div class="tombol">
+          <button class="button" onclick="downloadConfig('output2')">Download</button>
+          <button class="button" onclick="pasteConfig('output2')">Copy to Clipboard</button>
+        </div>
+      </div>
+      <hr>
+      <div>
+        <h4><b>Base BFM Config</b></h4>
+        <textarea id="output3"></textarea>
+        <br />
+        <div class="tombol">
+          <button class="button" onclick="downloadConfig('output3')">Download</button>
+          <button class="button" onclick="pasteConfig('output3')">Copy to Clipboard</button>
+        </div>
+      </div>
+      <hr>
+      <div>
+        <h4><b>Simple BFM Config</b></h4>
+        <textarea id="output4"></textarea>
+        <br />
+        <div class="tombol">
+          <button class="button" onclick="downloadConfig('output4')">Download</button>
+          <button class="button" onclick="pasteConfig('output4')">Copy to Clipboard</button>
+        </div>
+      </div>
+      <hr>
+      <div>
+        <h4><b>NekoBox Config</b></h4>
+        <textarea id="output5"></textarea>
+        <br />
+        <div class="tombol">
+          <button class="button" onclick="downloadConfig('output5')">Download</button>
+          <button class="button" onclick="pasteConfig('output5')">Copy to Clipboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="kaki">
+      <a href="https://github.com/jaka1m/" target="_blank">
+        <svg class="fa" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
+          <path fill="currentColor" d="M8 .198a8 8 0 0 0-2.529 15.591c.4.074.547-.174.547-.385c0-.191-.008-.821-.011-1.489c-2.226.484-2.695-.944-2.695-.944c-.364-.925-.888-1.171-.888-1.171c-.726-.497.055-.486.055-.486c.803.056 1.226.824 1.226.824c.714 1.223 1.872.869 2.328.665c.072-.517.279-.87.508-1.07c-1.777-.202-3.645-.888-3.645-3.954c0-.873.313-1.587.824-2.147c-.083-.202-.357-1.015.077-2.117c0 0 .672-.215 2.201.82A7.672 7.672 0 0 1 8 4.066c.68.003 1.365.092 2.004.269c1.527-1.035 2.198-.82 2.198-.82c.435 1.102.162 1.916.079 2.117c.513.56.823 1.274.823 2.147c0 3.073-1.872 3.749-3.653 3.947c.287.248.543.735.543 1.481c0 1.07-.009 1.932-.009 2.195c0 .213.144.462.55.384A8 8 0 0 0 8.001.196z" />
+        </svg>
+      </a>
+    </div>
+  </footer>
+</body>
+</html>
